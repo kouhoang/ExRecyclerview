@@ -88,6 +88,7 @@ class RecyclerViewViewModel : ViewModel() {
 
     fun refreshData() {
         currentPage = 0
+        recyclerItemModels.shuffle() // Trộn lại dữ liệu để nhìn việc refresh trực quan hơn
         liveDataOfList.value = recyclerItemModels.take(pageSize)
     }
 }
