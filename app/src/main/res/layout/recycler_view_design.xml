@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView android:id="@+id/card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="120dp"
+            android:src="@drawable/toanchuccaothu"
+            android:id="@+id/imageView"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+            android:textStyle="bold"
+            android:id="@+id/tenTruyen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Toàn chức cao thủ"
+            android:textAppearance="?attr/textAppearanceTitleSmall"
+            />
+
+            <TextView
+                android:id="@+id/tacGia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hồ Điệp Lam"
+                android:textAppearance="?attr/textAppearanceLabelSmall"
+                android:textColor="?android:attr/textColorSecondary"
+                android:layout_marginTop="6dp"
+                />
+
+            <TextView
+                android:id="@+id/soChuong"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1765 chương"
+                android:textAppearance="?attr/textAppearanceLabelSmall"
+                android:textColor="?android:attr/textColorSecondary"
+                android:layout_marginTop="6dp"
+                />
+
+            <LinearLayout
+                android:id="@+id/theLoaiContainer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="6dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
