@@ -49,9 +49,7 @@ class MainActivity : AppCompatActivity() {
                 ) {
                     super.onScrolled(recyclerView, dx, dy)
                     val layoutManager = recyclerView.layoutManager as LinearLayoutManager
-                    // Kiểm tra nếu người dùng đã cuộn đến cuối danh sách
                     if (layoutManager.findLastVisibleItemPosition() >= adapter.itemCount - 1) {
-                        // Gọi phương thức loadMoreData() của ViewModel để tải thêm dữ liệu
                         viewModel.loadMoreData()
                     }
                 }
@@ -60,7 +58,7 @@ class MainActivity : AppCompatActivity() {
 
         // Thiết lập SwipeRefreshLayout để xử lý refresh
         swipeRefreshLayout.setOnRefreshListener {
-            viewModel.fetchSampleData()
+            viewModel.refreshData()
         }
     }
 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.exrecyclerview.R
 import com.example.exrecyclerview.model.MyData
+import kotlin.math.min
 
 class RecyclerViewViewModel : ViewModel() {
     // LiveData chứa danh sách dữ liệu để cập nhật RecyclerView
@@ -22,7 +23,7 @@ class RecyclerViewViewModel : ViewModel() {
             ),
             MyData(R.drawable.vudongcankhon, "Vũ động càn khôn", "Thiên Tàm Thổ Đậu", 1309, listOf("Tiên Hiệp", "Huyền Huyễn")),
             MyData(R.drawable.nguyenton, "Nguyên Tôn", "Thiên Tàm Thổ Đậu", 1502, listOf("Tiên Hiệp", "Huyền Huyễn")),
-            MyData(R.drawable.daichuate, "Vũ động càn khôn", "Thiên Tàm Thổ Đậu", 1563, listOf("Tiên Hiệp", "Huyền Huyễn", "Dị Giới")),
+            MyData(R.drawable.daichuate, "Đại Chúa Tể", "Thiên Tàm Thổ Đậu", 1563, listOf("Tiên Hiệp", "Huyền Huyễn", "Dị Giới")),
             MyData(R.drawable.tamthe, "Tam thể", "Lưu Từ Hân", 38, listOf("Khoa Học", "Viễn Tưởng")),
             MyData(R.drawable.thegioihoanmy, "Thế giới hoàn mỹ", "Thần Đông", 2015, listOf("Tiên Hiệp", "Kiếm Hiệp", "Huyền Huyễn")),
             MyData(R.drawable.giathien, "Già Thiên", "Thần Đông", 1896, listOf("Tiên Hiệp", "Dị Giới")),
@@ -56,50 +57,37 @@ class RecyclerViewViewModel : ViewModel() {
     private val recyclerItemModels = ArrayList<MyData>()
     private var currentPage = 0
     private val pageSize = 20
-    private val itemsPerPage = 20
-    private val repeatCount = 10
+    private val totalDataSize = initialData.size * 10
 
     init {
-        fetchSampleData()
+        generateAllData()
     }
 
-    internal fun fetchSampleData() {
-        recyclerItemModels.clear()
-        for (i in 1..repeatCount) {
-            for (item in initialData) {
-                recyclerItemModels.add(item.copy(title = "${item.title} $i"))
+    private fun generateAllData() {
+        if (recyclerItemModels.isEmpty()) { // Kiểm tra dữ liệu đã được sinh ra chưa
+            for (i in 1..10) {
+                for (item in initialData) {
+                    recyclerItemModels.add(item.copy(title = "${item.title} $i"))
+                }
             }
+            recyclerItemModels.shuffle()
         }
-        liveDataOfList.value = getRandomData(recyclerItemModels)
+        liveDataOfList.value = recyclerItemModels.take(pageSize)
     }
 
     fun loadMoreData() {
-        // Xác định phạm vi dữ liệu mới cần tải
-        val start = (currentPage + 1) * pageSize + 1
-        val end = start + pageSize - 1
+        val start = (currentPage + 1) * pageSize
+        val end = min(start + pageSize, recyclerItemModels.size)
 
-        // Danh sách lưu trữ dữ liệu mới
-        val newData = ArrayList<MyData>()
-        for (i in start..end) {
-            // Lấy dữ liệu mẫu và tạo dữ liệu mới với tiêu đề được thay đổi
-            val originalItem = initialData[(i - 1) % initialData.size]
-            newData.add(originalItem.copy(title = "${originalItem.title} $i"))
+        if (start < end) {
+            val newData = recyclerItemModels.subList(start, end)
+            liveDataOfList.value = (liveDataOfList.value ?: emptyList()).toMutableList().apply { addAll(newData) }
+            currentPage++
         }
-
-        // Cập nhật danh sách dữ liệu hiện tại với dữ liệu mới và trộn ngẫu nhiên
-        val updatedList = recyclerItemModels.toMutableList().apply { addAll(newData) }
-        recyclerItemModels.clear()
-        recyclerItemModels.addAll(getRandomData(updatedList))
-        liveDataOfList.value = recyclerItemModels
-
-        currentPage++
     }
 
     fun refreshData() {
         currentPage = 0
-        fetchSampleData()
-        loadMoreData()
+        liveDataOfList.value = recyclerItemModels.take(pageSize)
     }
-
-    private fun getRandomData(data: List<MyData>): List<MyData> = data.shuffled()
 }
